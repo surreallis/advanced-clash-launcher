@@ -6,9 +6,9 @@ from code.calculator.track.tracks import Squirt, Zap
 
 def zap_traversal(n):
     zap_iter = combinations_with_replacement([4, 5, 6, 7], 2)
-    zap_targets = product(range(4), range(4))
+    zap_targets = product(range(n), range(n))
     squirt_iter = combinations_with_replacement([4, 5, 6, 7], 2)
-    squirt_targets = product(range(4), range(4))
+    squirt_targets = product(range(n), range(n))
     yield from product(zap_iter, squirt_iter, zap_targets, squirt_targets)
 
 

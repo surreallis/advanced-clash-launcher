@@ -15,7 +15,7 @@ class Squirt(Track):
             entities[key].add_effect(EffectSoak(self.soak_times[self.level]))
 
     def get_priority(self):
-        return 5 + self.level * 0.1
+        return 5
 
     def apply(self, state):
         cog = state.entities[f'Cog{self.target}']
@@ -54,7 +54,7 @@ class Zap(Track):
         return super().calculate_accuracy(state, other_turns)
 
     def get_priority(self):
-        return 6 + self.level * 0.1
+        return 6
 
     def damage(self, state, target, mult, jumped=False):
         soak = state.entities[f'Cog{target}'].em.find_effect('Soak')

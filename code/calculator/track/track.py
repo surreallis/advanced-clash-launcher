@@ -5,7 +5,7 @@ from code.calculator.track.turn import Turn
 
 
 class AttackParameters:
-    def __init__(self, tgt: -1, level: 0, prestige: False):
+    def __init__(self, tgt=-1, level=0, prestige=False):
         self.target = tgt
         self.level = level
         self.prestige = prestige
@@ -25,6 +25,9 @@ class Track(Turn, ABC):
         self.target = ap.target
         self.level = ap.level
         self.prestige = ap.prestige
+
+    def get_priority2(self):
+        return self.level * 0.1
 
     def __repr__(self):
         return f'{self.id} [{self.level}]'

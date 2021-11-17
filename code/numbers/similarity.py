@@ -46,7 +46,7 @@ def detect_number_by_similarity(matrix, debug=False):
 
     if debug:
         for i in matrix:
-            print(i)
+            print(''.join(['.' if not x else 'o' for x in i]))
         print(min_ratio)
         print('')
     return min_ratio[0]

@@ -24,6 +24,9 @@ class Turn(ABC):
     def get_priority(self):
         return 0
 
+    def get_priority2(self):
+        return 0
+
     @abstractmethod
     def apply(self, state):
         pass
@@ -37,6 +40,9 @@ class FunctionTurn(Turn):
     def __init__(self, func):
         super().__init__()
         self.func = func
+
+    def __repr__(self):
+        return f'Func[]'
 
     def apply(self, state):
         v = self.func

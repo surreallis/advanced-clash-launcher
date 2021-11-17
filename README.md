@@ -7,6 +7,7 @@ Launching multiple toons, freezing toons, finding zap combos using screen recogn
 * Install python 3.X (I don't know what version is needed, I think 3.7 or higher).
 * Clone this project.
 * ``pip install -r requirements.txt``
+* Optional: download any multicontroller and put it into project root
 
 ## Configuration
 The `config.py` file contains sensible defaults. In particular:

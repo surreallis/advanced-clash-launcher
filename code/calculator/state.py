@@ -30,7 +30,7 @@ class State:
             if not i.is_valid(self):
                 return
 
-        turns = sorted(turns, key=lambda t: t.get_priority())
+        turns = sorted(turns, key=lambda t: t.get_priority() + t.get_priority2())
         j = 1
         while j < len(turns):
             if turns[j].get_priority() > turns[j - 1].get_priority():

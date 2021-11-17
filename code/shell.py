@@ -26,6 +26,7 @@ def unfreeze(app):
 @monkey('ls', 'list')
 @monkey('cr', 'recognize')
 @monkey('rc', 'rcombos')
+@monkey('dc', 'disconnect')
 class ACLShell(Cmd):
     intro = 'Welcome to Advanced Clash Launcher v0.1.'
     district = config.default_district
@@ -176,7 +177,7 @@ class ACLShell(Cmd):
         cogs = reversed(arg.split(' '))
         state = State()
         for i in cogs:
-            hp = int(i)
+            hp = int(i.replace('e', ''))
             if hp < 20:
                 hp = (hp + 1) * (hp + 2) * (1.5 if 'e' in i else 1)
             state.spawn_cog(Cog(hp, hp))
