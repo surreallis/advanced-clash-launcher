@@ -1,0 +1,18 @@
+-
+  login: your_login
+  password: your_password  # can't encrypt passwords right now
+  toon_key: 1  # number from 0 to 5, setting 6 launches the main menu - 0-2 is top row and 3-5 bottom row
+  friendly_name: Your Toon  # this is displayed when you launch the toon or do any of the operations
+  aliases: ['a', '1', 'toon']  # now doing any of "launch a", "launch 1", "launch toon" launches this one
+-
+  login: your_login  # can use the same account multiple times in case you have multiple toons
+  password: your_password
+  toon_key: 4
+  friendly_name: Other toon on same account
+  aliases: ['toon2'] # the launcher is smart and won't let you launch toon2 while toon is running
+-
+  login: another_login  # can use multiple accounts as well
+  password: secret2
+  toon_key: 3
+  friendly_name: Other account
+  aliases: ['thingy']  # now you can use "launch a thingy" or "launch toon thingy" or "launch toon2 thingy"
