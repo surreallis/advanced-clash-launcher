@@ -10,6 +10,7 @@ from code.calculator.entity.cog import Cog
 from code.calculator.generator import zap_test
 from code.calculator.state import State
 from code.imagery import separate_image_into_health_values, sanctify_health_values
+from code.shady import ShadyController
 from code.util import monkey, load_toons, launch, App
 
 
@@ -27,8 +28,9 @@ def unfreeze(app):
 @monkey('cr', 'recognize')
 @monkey('rc', 'rcombos')
 @monkey('dc', 'disconnect')
+@monkey('sc', 'shady')
 class ACLShell(Cmd):
-    intro = 'Welcome to Advanced Clash Launcher v0.1.'
+    intro = 'Welcome to Advanced Toontown Launcher v0.1.'
     district = config.default_district
     apps: List[App] = []
     multicontroller: Application = False
@@ -58,7 +60,7 @@ class ACLShell(Cmd):
 
     def do_district(self, arg):
         """
-            Changes the current district.
+            Changes the current district (only works with Clash).
             Example usage: district tesla
         """
         if arg not in config.district_list:
@@ -68,6 +70,11 @@ class ACLShell(Cmd):
         print('Setting current district to', config.district_list[arg])
         self.district = config.district_list[arg]
         self.update_prompt()
+
+    def add_account(self, app):
+        app.shady = ShadyController(app)
+        self.apps.append(app)
+        print(f'Launched {app.user.friendly_name} (game: {app.user.game})')
 
     def do_launch(self, arg):
         """
@@ -83,15 +90,33 @@ class ACLShell(Cmd):
                 continue
 
             acc = self.toons[i]
-            if [x for x in self.apps if x.user.login == acc.login]:
+            if [x for x in self.apps if x.user.login == acc.login and x.user.game == acc.game]:
                 print(f'! Account {acc.login} is already in use. Stop it first.')
                 continue
             app = launch(acc, self.district)
             if not app:
                 print(f'! Error launching {acc.friendly_name}')
                 continue
-            self.apps.append(app)
-            print(f'Launched {acc.friendly_name}')
+            elif not isinstance(app, App):
+                def recoil():
+                    self.add_account(app[1]())
+                print(f'Launching timer for {acc.friendly_name}')
+                Timer(app[0], recoil).start()
+            else:
+                self.add_account(app)
+
+    def do_shady(self, arg):
+        """
+            Switches shady parameters.
+            Example usage: shady shady_key_id toon_alias1 toon_alias2
+        """
+        self.update_apps()
+        spl = arg.split(' ')
+        key = spl.pop(0)
+        windows_to_close = [x for x in self.apps if [y for y in x.user.aliases if y in spl]]
+        for i in windows_to_close:
+            if i.shady:
+                i.shady.modify(key)
 
     def do_list(self, arg):
         """
@@ -128,6 +153,8 @@ class ACLShell(Cmd):
         func = separate_image_into_health_values if debug or not arg else sanctify_health_values
         self.update_apps()
         for app in self.apps:
+            if app.user.game != 'clash':
+                continue
             img = app.uia.top_window().capture_as_image()
             print(app.user.friendly_name, func(img, debug))
 
@@ -157,6 +184,8 @@ class ACLShell(Cmd):
         self.update_apps()
         already_used = set()
         for app in self.apps:
+            if app.user.game != 'clash':
+                continue
             hvs = sanctify_health_values(app.uia.top_window().capture_as_image())
             print(app.user.friendly_name, hvs if hvs else '(not in battle)')
             if not hvs:

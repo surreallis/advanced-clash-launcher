@@ -1,20 +1,26 @@
-# Advanced Clash Launcher
-A command-line app for various TT:Corporate Clash manipulations.
-Launching multiple toons, freezing toons, finding zap combos using screen recognition and more. 
+# Advanced Toontown Launcher
+A command-line app for various Toontown manipulations.
+Supports **Toontown Rewritten** and **Toontown: Corporate Clash**.
+Launching multiple toons in different servers, freezing toons,
+finding zap combos using screen recognition (only on Clash) and more. 
 
 ## Installation
-* Install TT:Corporate Clash.
+* Install Toontown Rewritten and/or Toontown: Corporate Clash.
 * Install python 3.X (I don't know what version is needed, I think 3.7 or higher).
 * Clone this project.
 * ``pip install -r requirements.txt``
+  * You can install requirements manually. `Pillow` is not required if not using
+  the Clash screen recognition function.
 * Optional: download any multicontroller and put it into project root
 
 ## Configuration
 The `config.py` file contains sensible defaults. In particular:
-* The launcher is located under `%user%\Appdata\Local\Corporate Clash`
+* The launcher is located under `%user%\Appdata\Local\Corporate Clash` for Clash and
+`C:\Program Files (x86)\Toontown Rewritten` for TTR (you don't need both games installed 
+if you only play one)
 * The account file is located in the project root
 * The multicontroller is also located in the project root
-* The default district is Seltzer Summit
+* The default district is Seltzer Summit (only applicable in Clash)
 
 You likely don't need to change this file.
 However, you do need to create an `accounts.yml` file in the project root.
@@ -26,9 +32,11 @@ The launcher supports any number of accounts.
 Running `main.py` will launch a cmd-like interface with a bunch of functions:
 * `launch` or `lc` starts any number of toons at the same time: `lc alias1 alias2 alias3`
 will launch these 3 toons, provided they exist in accounts file. It's smart and won't
-let you start the same account multiple times unless you close the old window
+let you start the same account in the same game multiple times unless you close the old window
 (but it will let you start it once if you already started it with other launcher).
 The toons all are started in the current district (which is Seltzer Summit by default).
+  * The district changing, and launching of the toon instead of main menu is only
+  possible on Clash due to API limitations.
 * `district` or `ds` changes the current district. It only affects future toons logging in,
 not the ones already started.
 * `multicontroller` or `mc` starts the multicontroller, or focuses it if it's already started.
@@ -38,19 +46,18 @@ or anything if you wanted to).
 * `freeze` will *freeze* a toon for a specified time. This is not recommended:
   * Each 30 seconds, the server sends the Heartbeat request. If a toon does not respond
   twice in a row, it will get disconnected. So freezing for more than 30 sec. can
-  force a dc.
+  force a dc. (I don't know the specifics on TTR, but probably is true too)
   * Freezing prevents all damage done to the toon from some sources. The most popular one
   is CFO gears. Mods don't like this and might get you banned if you freeze in a CFO.
   * People don't like waiting for you to unfreeze. There's currently no way to unfreeze other
   than waiting the specified time amount.
   * If the launcher crashes, the toon will remain frozen indefinitely, which will cause a DC.
-* You still can use `freeze`, but only at your own risk. Don't report me for adding this
-function if you get banned for it or if you dc from a boss or anything.
+  * Use at your own risk. I am not responsible for any bans/kicks you get while using Freeze.
 * `zap` will find a zap combo for a specific set. Each cog can be determined by level or HP.
   * Example of using this: `zap 12e 180 15 212` will show smth like "Tesla Cloud TV Cloud"
   * Experimental feature. DM all bugs to me on Discord.
 * `recognize` or `cr`: finds all toons connected which are currently in a battle, and prints
-the HP values of each cog in battle using screen recognition.
+the HP values of each cog in battle using screen recognition. Only works with Clash.
   * Only works on Full HD, HD and 960x540 window sizes. Might work on others but untested.
   * If you need it to work on small window sizes (HD and below) which aren't implemented,
   you can teach it. The explanation is written below.
@@ -62,9 +69,13 @@ the HP values of each cog in battle using screen recognition.
   Running this command like `cr debug` will enable debug mode - use it for reports
   (this will return the unsanitized values).
 * `rcombos` or `rc`: uses screen recognition to get all battles, and finds zap combo for each.
+  * Again, only works with Clash.
   * Another experimental feature. It seems to mostly work, but report all bugs to me.
-  * This is how it looks:
-  ![rcombos command](https://media.discordapp.net/attachments/839954064980836382/910484196206739476/unknown.png)
+* `shady` or `sd`: configures shady modules.
+  * The only currently existing shady module is Keep Alive, which can be enabled with
+  `shady ka toon_alias1 toon_alias2 toon_alias3` and disabled with the same command.
+  * Keep Alive isn't allowed on most servers. Use at your own risk. I am not responsible for
+  any infractions you receive while using Keep Alive.
 
 ## Future additions
 * Improve the calculator to add other kinds of combos.
@@ -74,6 +85,7 @@ the HP values of each cog in battle using screen recognition.
 * An option to automatically use the combos detected.
 * Improved quad toon handling, and toon build knowledge.
 * Automatic detection of gags used by other toons.
+* Support for other servers (ODS, TVS, etc.) - probably will never do that tbh
 
 ## Advanced usage
 ### Under the hood

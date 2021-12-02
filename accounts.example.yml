@@ -10,6 +10,14 @@
   toon_key: 4
   friendly_name: Other toon on same account
   aliases: ['toon2'] # the launcher is smart and won't let you launch toon2 while toon is running
+  game: 'clash' # defaults to clash, can be either clash or ttr
+-
+  login: your_login
+  password: your_ttr_password
+  # toon_key is not supported on ttr
+  friendly_name: TTR toon
+  aliases: ['ttr'] # since the game is different, you can launch TTR toon and Your Toon at the same time
+  game: 'ttr'
 -
   login: another_login  # can use multiple accounts as well
   password: secret2

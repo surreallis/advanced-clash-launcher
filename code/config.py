@@ -1,4 +1,4 @@
-from os import path
+from os import path, sep
 
 default_district = 'Seltzer Summit'
 district_list = {
@@ -13,7 +13,17 @@ district_list = {
 
 multicontroller_path = path.join(path.dirname(__file__), '..', 'ToontownMulticontroller.exe')
 account_path = path.join(path.dirname(__file__), '..', 'accounts.yml')
-app_path = path.join(path.expandvars('%localappdata%'), 'Corporate Clash')
-app_exe = path.join(app_path, 'CorporateClash.exe')
-api_path = 'https://corporateclash.net/api/v1/login/'
-game_server = 'gs.corporateclash.net'
+
+game_data = {
+    'clash': {
+        'app_path': path.join(path.expandvars('%localappdata%'), 'Corporate Clash'),
+        'app_exe': path.join(path.expandvars('%localappdata%'), 'Corporate Clash', 'CorporateClash.exe'),
+        'api_path': 'https://corporateclash.net/api/v1/login/',
+        'game_server': 'gs.corporateclash.net'
+    },
+    'ttr': {
+        'app_path': path.join('C:', sep, 'Program Files (x86)', 'Toontown Rewritten'),
+        'app_exe': path.join('C:', sep, 'Program Files (x86)', 'Toontown Rewritten', 'TTREngine64.exe'),
+        'api_path': 'https://www.toontownrewritten.com/api/login?format=json'
+    }
+}
